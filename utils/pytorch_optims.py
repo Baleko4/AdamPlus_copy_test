@@ -8,12 +8,11 @@ import torch
 from adabound import AdaBound
 from adabelief_pytorch import AdaBelief
 from lion_pytorch import Lion
-from adopt import ADOPT
 from adan_pytorch import Adan
 from adashift.optimizers import AdaShift
 from PIDAO_SI import PIDAccOptimizer_SI
 from pytorch_optimizers import AdamPlus, Adam2, Adam3, Lamb, Adam4, Adam5, AdamSNR
-from pytorch_optimizers import ADOPTPlus, AdamPlusSNRlr, AdamPlusNL
+from pytorch_optimizers import AdamPlusSNRlr, AdamPlusNL
 
 
 def get_optimizer(params, lr, args):
@@ -38,8 +37,6 @@ def get_optimizer(params, lr, args):
                               weight_decouple=True, rectify=False, degenerated_to_sgd=False, print_change_log=False)
     elif opt == "Adagrad".lower():
         optimizer = torch.optim.Adagrad(params, lr=lr, weight_decay=args.weight_decay)
-    elif opt == "ADOPT".lower():
-        optimizer = ADOPT(params, lr=lr, betas=(args.beta_1, args.beta_2), weight_decay=args.weight_decay)
     elif opt == "Lion".lower():
         optimizer = Lion(params, lr=lr, betas=(args.beta_1, args.beta_2), weight_decay=args.weight_decay)
     elif opt == "PIDAOSI".lower():
@@ -92,8 +89,6 @@ def get_optimizer(params, lr, args):
             weight_decay=args.weight_decay, weight_decouple=True, option=2, 
             is_lamb=True,
         )
-    elif opt == "ADOPTPlus".lower() or opt == "Adam2".lower():
-        optimizer = ADOPTPlus(params, lr=lr, beta1=args.beta_1, beta2=args.beta_2, db_noise=args.db_noise, weight_decay=args.weight_decay, weight_decouple=False, is_lamb=False)
     elif opt == "AdamPlusNL1".lower() or opt == "Adam4".lower():
         optimizer = AdamPlusNL(
             params, lr=lr, beta1=args.beta_1, beta2=args.beta_2,
@@ -123,15 +118,6 @@ def get_optimizer(params, lr, args):
         optimizer = AdamPlusNL(
             params, lr=lr, beta1=args.beta_1, beta2=args.beta_2,
             weight_decay=args.weight_decay, weight_decouple=True, option=2,
-        )
-    elif opt == "ADOPTWPlus".lower() or opt == "AdamW2".lower():
-        optimizer = ADOPTPlus(params, lr=lr, beta1=args.beta_1, beta2=args.beta_2, db_noise=args.db_noise, weight_decay=args.weight_decay, weight_decouple=True, is_lamb=False)
-    elif opt == "ADOPTLambPlus".lower() or opt == "Lamb2".lower():
-        optimizer = ADOPTPlus(
-            params, lr=lr, beta1=args.beta_1, beta2=args.beta_2, eps=1e-10,
-            weight_decay=args.weight_decay, weight_decouple=False,
-            is_lamb=True, option=0,
-            db_noise=-140
         )
     elif opt == "Adam3".lower():
         optimizer = Adam3(
