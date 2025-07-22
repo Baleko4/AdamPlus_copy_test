@@ -16,7 +16,8 @@ class CSVLogger:
             "episode": episode,
             **info_dict
         }])
-        self.results = pd.concat([self.results, df], ignore_index=True)
+        if len(self.results) != 0 and len(df) != 0: 
+            self.results = pd.concat([self.results, df], ignore_index=True)
         self.results.to_csv(self.log_path, index=False)
 
         # Optional tensorboard logging
